@@ -129,7 +129,7 @@ try:
         temperature=0.49,
         top_p=0.9, 
         repeat_penalty=1.01,
-        verbose=False
+        verbose=False,
         n_gpu_layers=0
     )
     print(f"{GOOD}      [OK]{RESET}")
