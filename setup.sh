@@ -103,7 +103,3 @@ fi
 echo -e "\n${INFO}================================================${RESET}"
 echo -e "${GOOD}   SETUP COMPLETE${RESET}"
 echo -e "${INFO}================================================${RESET}"
-echo -e "\n${INFO}To activate the environment later:${RESET}"
-echo -e "    source ${VENV_NAME}/bin/activate"
-echo -e "\n${INFO}To run the RAG system:${RESET}"
-echo -e "    source ${VENV_NAME}/bin/activate && python3 script.py\n"
