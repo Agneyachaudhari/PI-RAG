@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# ===== COLOURS =====
 RESET="\033[0m"
 INFO="\033[96;1m"
 GOOD="\033[92;1m"
@@ -7,20 +8,23 @@ WARN="\033[93;1m"
 ERR="\033[91;1m"
 HEAD="\033[95;1m"
 
-#CONFIG
+# ===== CONFIG =====
 VENV_NAME="rag-env"
 EMBEDDER_NAME="sentence-transformers/all-MiniLM-L6-v2"
 EMBEDDER_SAVE="models/embedder"
 LLM_DIR="models/llm"
 LLM_FILE="$LLM_DIR/model.gguf"
 
-LLM_URL="https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_0_8_8.gguf"
+# ===== CHANGE THIS WHEN YOU HAVE THE LINK =====
+LLM_URL="PASTE_YOUR_GGUF_DOWNLOAD_LINK_HERE"
 
-set -e
+set -e  # exit on error
+
 echo -e "${INFO}================================================${RESET}"
 echo -e "${HEAD}         RAG ENVIRONMENT SETUP                  ${RESET}"
 echo -e "${INFO}================================================${RESET}"
 
+# ===== STEP 1: System dependencies =====
 echo -e "\n${INFO}[1/5] Installing system dependencies...${RESET}"
 sudo apt-get update -qq
 sudo apt-get install -y -qq \
@@ -34,6 +38,7 @@ sudo apt-get install -y -qq \
     libopenblas-dev
 echo -e "${GOOD}      [OK]${RESET}"
 
+# ===== STEP 2: Create venv =====
 echo -e "\n${INFO}[2/5] Creating virtual environment '${VENV_NAME}'...${RESET}"
 if [ -d "$VENV_NAME" ]; then
     echo -e "${WARN}      [!] venv already exists, skipping creation${RESET}"
@@ -42,19 +47,21 @@ else
     echo -e "${GOOD}      [OK]${RESET}"
 fi
 
+# Activate venv
 source "$VENV_NAME/bin/activate"
 echo -e "${GOOD}      [OK] Activated${RESET}"
 
+# ===== STEP 3: Install Python libraries =====
 echo -e "\n${INFO}[3/5] Installing Python libraries...${RESET}"
 pip install --upgrade pip --quiet
 
 pip install \
     numpy \
     faiss-cpu \
-    sentence-transformers \
-    pickle5
+    sentence-transformers
 
-echo -e "${INFO}      Installing llama-cpp-python (Will take a while)...${RESET}"
+# llama-cpp-python CPU only build (no CUDA/Metal)
+echo -e "${INFO}      Installing llama-cpp-python (CPU only, this takes a while on Pi)...${RESET}"
 CMAKE_ARGS="-DLLAMA_BLAS=ON -DLLAMA_BLAS_VENDOR=OpenBLAS" \
 pip install llama-cpp-python --no-binary llama-cpp-python
 
@@ -100,4 +107,7 @@ fi
 echo -e "\n${INFO}================================================${RESET}"
 echo -e "${GOOD}   SETUP COMPLETE${RESET}"
 echo -e "${INFO}================================================${RESET}"
-
+echo -e "\n${INFO}To activate the environment later:${RESET}"
+echo -e "    source ${VENV_NAME}/bin/activate"
+echo -e "\n${INFO}To run the RAG system:${RESET}"
+echo -e "    source ${VENV_NAME}/bin/activate && python3 script.py\n"
