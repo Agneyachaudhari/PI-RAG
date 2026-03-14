@@ -16,7 +16,7 @@ LLM_DIR="models/llm"
 LLM_FILE="$LLM_DIR/model.gguf"
 
 # ===== CHANGE THIS WHEN YOU HAVE THE LINK =====
-LLM_URL="https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_0_8_8.gguf?download=true"
+LLM_URL="https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf?download=true"
 
 set -e  # exit on error
 
