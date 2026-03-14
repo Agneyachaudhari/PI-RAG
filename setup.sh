@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# ===== COLOURS =====
 RESET="\033[0m"
 INFO="\033[96;1m"
 GOOD="\033[92;1m"
@@ -8,18 +7,15 @@ WARN="\033[93;1m"
 ERR="\033[91;1m"
 HEAD="\033[95;1m"
 
-# ===== CONFIG =====
 VENV_NAME="rag-env"
 EMBEDDER_NAME="sentence-transformers/all-MiniLM-L6-v2"
 EMBEDDER_SAVE="models/embedder"
 LLM_DIR="models/llm"
 LLM_FILE="$LLM_DIR/model.gguf"
 
-# ===== CHANGE THIS WHEN YOU HAVE THE LINK =====
-LLM_URL="PASTE_YOUR_GGUF_DOWNLOAD_LINK_HERE"
+LLM_URL="https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_0_8_8.gguf"
 
-set -e  # exit on error
-
+set -e  
 echo -e "${INFO}================================================${RESET}"
 echo -e "${HEAD}         RAG ENVIRONMENT SETUP                  ${RESET}"
 echo -e "${INFO}================================================${RESET}"
