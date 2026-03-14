@@ -8,7 +8,7 @@ import pickle
 from datetime import datetime
 
 # ===== CONFIG =====
-TEXT_FILES = ["5.txt", "6.txt", "7.txt"]
+DATA_FOLDER = "data"
 EMBED_MODEL = "models/embedder"
 GGUF_MODEL = "models/llm/model.gguf"
 INDEX_FILE = "faiss.index"
@@ -29,6 +29,20 @@ ERR = "\033[91;1m"     # red
 CHUNK = "\033[97m"     # white
 QUEST = "\033[97;1m"   # white bold
 ANS = "\033[96;1m"     # cyan bold
+
+
+def get_text_files():
+    if not os.path.exists(DATA_FOLDER):
+        os.makedirs(DATA_FOLDER)
+        raise FileNotFoundError(f"'{DATA_FOLDER}' folder was missing, created it. Add .txt files there and restart.")
+    files = sorted([
+        os.path.join(DATA_FOLDER, f)
+        for f in os.listdir(DATA_FOLDER)
+        if f.endswith(".txt")
+    ])
+    if not files:
+        raise FileNotFoundError(f"No .txt files found in '{DATA_FOLDER}/'")
+    return files
 
 
 def write_log(question, answer):
@@ -68,8 +82,8 @@ def auto_chunk(text):
     return chunks
 
 
-def build_or_load_index(embedder):
-    text_hash = file_hash(TEXT_FILES)
+def build_or_load_index(embedder, text_files):
+    text_hash = file_hash(text_files)
     
     if os.path.exists(INDEX_FILE) and os.path.exists(META_FILE):
         with open(META_FILE, "rb") as f:
@@ -82,7 +96,7 @@ def build_or_load_index(embedder):
     print(f"{WARN}[!] Rebuilding index...{RESET}")
     
     all_chunks = []
-    for fpath in TEXT_FILES:
+    for fpath in text_files:
         try:
             with open(fpath, "r", encoding="utf-8", errors='ignore') as f:
                 content = f.read().strip()
@@ -111,23 +125,26 @@ def build_or_load_index(embedder):
 # ===== INITIALIZE =====
 try:
     print(f"{INFO}{'='*50}\n{HEAD}   RAG SYSTEM INITIALIZING\n{INFO}{'='*50}{RESET}")
-    
+
+    text_files = get_text_files()
+    print(f"{INFO}[*] Found {len(text_files)} file(s) in '{DATA_FOLDER}/': {[os.path.basename(f) for f in text_files]}{RESET}")
+
     print(f"{INFO}\n[1/3] Loading embedder...{RESET}")
     embedder = SentenceTransformer(EMBED_MODEL)
     print(f"{GOOD}      [OK]{RESET}")
     
     print(f"{INFO}\n[2/3] Loading index...{RESET}")
-    chunks, index = build_or_load_index(embedder)
+    chunks, index = build_or_load_index(embedder, text_files)
     print(f"{GOOD}      [OK] {len(chunks)} chunks{RESET}")
     
     print(f"{INFO}\n[3/3] Loading LLM...{RESET}")
     llm = Llama(
-        model_path=GGUF_MODEL, 
-        n_ctx=2500, 
+        model_path=GGUF_MODEL,
+        n_ctx=2500,
         n_threads=4,
         n_batch=128,
         temperature=0.49,
-        top_p=0.9, 
+        top_p=0.9,
         repeat_penalty=1.01,
         verbose=False,
         n_gpu_layers=0
