@@ -7,7 +7,7 @@ Makes it very easy to run you own, local, RAG system on a Raspberry Pi 5 with 4g
 -Complementary components(PSU, sd card, etc)
 -An intial internet connection for the setup(can be removed after setup)
 
-#Setup
+## Setup
 In the File where you want the program run
 ```bash
 git clone https://github.com/Agneyachaudhari/PI-RAG
@@ -31,3 +31,17 @@ rm setup.sh
 ```
 You have now succesfully installed your RAG system.
 To put data in the rag system make sure it is a .txt file and copy it to the **data** directory
+Now you can disconnect your internet.
+
+## How to use
+
+Ensure you are in the Programs directory
+
+Run
+```bash
+bash run.sh
+```
+Wait for the program to start
+Then Ask Away your questions.
+
+To exit just do Ctrl+C
