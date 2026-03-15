@@ -18,7 +18,7 @@ git clone https://github.com/Agneyachaudhari/PI-RAG
 ```
 In the terminal.
 
-After it runs you wnat to run
+After it runs you want to run
 ```bash
 cd PI-RAG
 ```
