@@ -3,8 +3,11 @@ Makes it very easy to run you own, local, RAG system on a Raspberry Pi 5 with 4g
 
 #Hardware & software needed
 -Raspberry Pi 5
+
 -Raspberry pi os lite(64 bit)
+
 -Complementary components(PSU, sd card, etc)
+
 -An intial internet connection for the setup(can be removed after setup)
 
 ## Setup
