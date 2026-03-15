@@ -2,6 +2,7 @@
 Makes it very easy to run you own, local, RAG system on a Raspberry Pi 5 with 4gb of ram or above.
 
 #Hardware & software needed
+
 -Raspberry Pi 5
 
 -Raspberry pi os lite(64 bit)
